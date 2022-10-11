@@ -1,0 +1,94 @@
+<%# encoding: UTF-8 %>
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta name="description" content="開発その他の記録です。">
+	<meta property="og:title" content="MRz-NET.org">
+	<meta property="og:type" content="website">
+	<meta property="og:image" content="https://www.mrz-net.org/img/ogps.png">
+	<meta property="og:url" content="https://www.mrz-net.org/_tdiary">
+	<meta property="og:description" content="開発その他の記録です。">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@emurenMRz">
+
+	<link rel="stylesheet" href="/mrz-net.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="<%= File.join RootPath, '/blog.css' %>" media="all">
+	<link rel="stylesheet" href="/css/page-header.css" media="all">
+	<script type="text/javascript" src="/js/page-header.js" defer async></script>
+	<title>MRz-NET.org</title>
+</head>
+
+<body>
+	<header id="page-header"></header>
+
+	<div id="content">
+		<noscript><div id="noscript">コンテンツを正常に表示させるためにJavaScriptを有効にして下さい。</div></noscript>
+
+		<nav class="adminmenu">
+			<div class="control">
+				<a href="<%= BasePath %>/newly/update"><button>更新日が新しい20件</button></a>
+				<a href="<%= BasePath %>/newly/post"><button>投稿日が新しい20件</button></a>
+				<a href="<%= BasePath %>/views"><button>閲覧数上位20件</button></a>
+			</div>
+			<div class="tags"><%= all_tags_link %></div>
+		</nav>
+
+		<%
+		@list_of_articles.map{|v|
+			id = "#{v[:created_at].strftime("%Y%m%d")}p#{v[:no]}"
+		%>
+			<a href="<%= BasePath %>/article/<%= id %>" title="<%= v[:title] %>">
+				<div class="section-anchor">
+					<div class="title"><%= v[:title] %></div>
+					<div class="section-metadata">
+						<span class="timestamp created_at"><%= v[:created_at].strftime("%Y-%m-%d") %></span>
+						<span class="timestamp updated_at"><%= v[:updated_at].strftime("%Y-%m-%d") %></span>
+						<span class="tags"><%= tag_list v[:tags] %></span>
+					</div>
+				</div>
+			</a>
+		<% }.join("\n") unless @list_of_articles.nil? %>
+
+		<% unless @article.nil? %>
+			<div class="section">
+				<header class="section-header">
+					<div class="title"><%= @article[:title] %></div>
+					<div class="section-metadata">
+						<span class="timestamp created_at"><%= @article[:created_at].strftime("%Y-%m-%d") %></span>
+						<span class="timestamp updated_at"><%= @article[:updated_at].strftime("%Y-%m-%d %H:%M:%S") %></span>
+						<span class="tags"><%= tag_list_with_link @article[:tags] %></span>
+					</div>
+				</header>
+				<div class="section-body"><%= body_to_html @article[:body], @article[:format] %></div>
+			</div>
+
+			<% @article[:comments].map{|v| %>
+				<div class="comment">
+					<%= v[:body].split("\n").join("<br>") %>
+					<footer class="comment-metadata">
+						<span class="timestamp created_at"><%= v[:created_at].strftime("%Y-%m-%d") %></span>
+						<% unless v[:mail].nil? %>
+							<a href="mailto:<%= v[:mail] %>"><span class="name"><%= v[:name] %></span></a>
+						<% else %>
+							<span class="name"><%= v[:name] %></span>
+						<% end %>
+					</footer>
+				</div>
+			<% }.join("\n") unless @article[:comments].nil? %>
+
+			<% unless @article[:referer].nil? %>
+				<div class="referer">
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+
+	<footer id="page-footer">&copy; 1999~ emuren.</footer>
+</body>
+
+</html>

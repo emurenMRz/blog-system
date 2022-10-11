@@ -1,0 +1,118 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	font-size: 14px;
+	overflow: hidden auto;
+}
+
+#header {
+	text-align: center;
+}
+
+#content {
+	overflow: hidden auto;
+}
+
+.editor {
+	margin: 0 auto;
+	padding: 1em;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.editor .paragram {
+	margin-bottom: 1em;
+	padding: .5em;
+	width: 100%;
+	background-color: hsl(0, 0%, 95%);
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.editor .label {
+	display: block;
+	margin: .5em 0;
+	width: 100%;
+}
+
+.editor .title,
+.editor .tags {
+	margin: .5em 0;
+	width: 100%;
+	border: 1px solid gray;
+	border-radius: 2px;
+	box-sizing: border-box;
+}
+
+.editor .add-tag {
+	margin-right: 1em;
+	cursor: pointer;
+}
+
+.editor .add-tag:hover {
+	text-decoration: underline;
+}
+
+.editor .body {
+	display: block;
+	margin: .5em 0;
+	width: 100%;
+	height: 40em;
+	box-sizing: border-box;
+}
+
+.editor .submit,
+.editor .preview {
+	margin-right: 1em;
+	font-size: 1.25em;
+}
+
+.article-list-frame {
+	width: 100%;
+	height: 10em;
+	overflow: hidden auto;
+}
+
+.article-list {
+	width: 100%;
+}
+
+.article-list .article-list-header>th {
+	border-bottom: 1px solid black;
+}
+
+.article-list .article-row {
+	cursor: pointer;
+}
+
+.article-list .article-row:hover {
+	background-color: lightsteelblue;
+}
+
+.article-list .article-row .date {
+	text-align: center;
+}
+
+.article-list .article-row .number {
+	padding: 0 1em;
+	text-align: right;
+}
+
+.article-list .article-row .title {
+	width: 40%;
+}
+
+.article-list .article-row .checkbox {
+	text-align: center;
+}
+
+.article-list .article-row .format {
+	text-align: center;
+}
+
+.preview-box {
+	margin-bottom: 5em;
+}

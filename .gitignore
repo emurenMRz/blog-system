@@ -1,0 +1,4 @@
+/_private
+/db/dump
+/utility/*.json
+setting.rb

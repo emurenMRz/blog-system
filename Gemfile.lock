@@ -1,0 +1,16 @@
+GEM
+  specs:
+    commonmarker (0.23.6)
+    hikidoc (0.1.0)
+    sequel (5.60.1)
+
+PLATFORMS
+  amd64-freebsd-12
+
+DEPENDENCIES
+  commonmarker
+  hikidoc
+  sequel
+
+BUNDLED WITH
+   2.3.17

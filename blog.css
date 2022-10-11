@@ -1,0 +1,318 @@
+@charset "utf-8";
+
+#content a {
+	text-decoration: none;
+}
+
+#content {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.section {
+	position: relative;
+	margin-bottom: 1em;
+	font-size: 12px;
+}
+
+span.tag::before {
+	content: "#";
+}
+
+.section h2 {
+	line-height: 1.5em;
+	border-bottom: 2px solid silver;
+	color: #333333;
+}
+
+.section h3 {
+	color: #333333;
+}
+
+.section pre {
+	margin: 0;
+	padding: .5em;
+	background-color: black;
+	color: white;
+	overflow: auto;
+}
+
+.section code {
+	margin: 0;
+	padding: 0;
+	font-family: monospace;
+}
+
+.section p {
+	margin: 1em 0;
+	text-align: left;
+	text-indent: 1em;
+	padding: 0;
+}
+
+.section p img {
+	margin: 0 0 0 -1em;
+}
+
+.section blockquote {
+	margin: 1em auto;
+	padding: .5em;
+	border-left: 4px solid hsl(200, 100%, 75%);
+	background-color: hsl(200, 100%, 97%);
+}
+
+.section blockquote pre {
+	padding: .5em;
+}
+
+.section blockquote p {
+	margin: .5em;
+	padding: 0;
+}
+
+.section-header {
+	background-color: whitesmoke;
+	border-bottom: 2px solid silver;
+	color: #333333;
+}
+
+.section-header a {
+	text-decoration: none;
+	border: none;
+}
+
+.section-header .title {
+	line-height: 1.5em;
+	font-size: 1.5em;
+	font-family: Verdana, Osaka, sans-serif;
+	font-weight: bold;
+	color: #333333;
+}
+
+.section-header .title::before {
+	content: "■ ";
+	color: gray;
+}
+
+.section-metadata {
+	padding-left: 2em;
+	font-size: .7em;
+	font-weight: normal;
+}
+
+.section-metadata span.created_at {
+	margin-right: 1em;
+}
+
+.section-metadata span.created_at::before {
+	content: "created at: ";
+	color: gray;
+	font-size: .7em;
+}
+
+.section-metadata span.updated_at {
+	margin-right: 1em;
+}
+
+.section-metadata span.updated_at::before {
+	content: "updated at: ";
+	color: gray;
+	font-size: .7em;
+}
+
+.section-body {
+	margin-bottom: 2em;
+}
+
+/**************** list of articles *************************/
+
+.section-anchor {
+	margin: 0 auto .2em;
+	padding: .25em;
+	background-color: hsl(230, 15%, 90%);
+	border-radius: 4px;
+}
+
+.section-anchor:hover {
+	background-color: hsl(230, 80%, 80%);
+}
+
+.section-anchor .title {
+	line-height: 1.2em;
+	font-size: 1.2em;
+	font-family: Verdana, Osaka, sans-serif;
+	font-weight: bold;
+	color: #333333;
+}
+
+.section-anchor .title::before {
+	content: "■";
+}
+
+.section-anchor .section-metadata {
+	color: gray;
+}
+
+/**************** decoration *************************/
+
+.section a img {
+	border: none;
+}
+
+.section a:hover {
+	color: #ff0000;
+}
+
+.section pre {
+	border: solid 1px #cccccc;
+	margin: 1em;
+	padding: 0.7em;
+	line-height: 1.2em;
+	font-family: monospace;
+}
+
+/************************ adminmenu ****************************/
+
+.adminmenu {
+	margin: auto auto 1em;
+	color: #333333;
+}
+
+.adminmenu a {
+	text-decoration: none;
+}
+
+.adminmenu .control {}
+.adminmenu .control button {
+	padding: .25em .5em;
+}
+
+.adminmenu .tags {}
+
+/************************* list **********************/
+
+.section ul {
+	margin: 1em 1em 1em 2em;
+	padding: 0;
+}
+
+.section ol {
+	margin: 1em 1em 1em 2.5em;
+	padding: 0;
+}
+
+.section ul li,
+.section ol li,
+.section ol ul,
+.section ol ol,
+.section ul ul,
+.section li li {
+	margin: 0 0 0 1em;
+	padding: 0;
+}
+
+.section dl {
+	margin: 1em 1em 1em 1.5em;
+}
+
+.section dt {
+	font-weight: bold;
+}
+
+/********************** table **********************/
+
+.section table {
+	margin: 1.5em auto;
+	padding: 0;
+	width: auto;
+	border: 0;
+}
+
+.section td {
+	background-color: transparent;
+	padding: .25rem;
+	border-style: solid;
+	border-color: gray;
+	border-width: 1px 0 0 0;
+}
+
+.section td font,
+.section td a {
+	border: none;
+	color: #333333;
+}
+
+.section td a {
+	border: 0;
+}
+
+.section input {
+	border: solid 1px #a0a0a0;
+	background-color: #ffffff;
+	color: #333333;
+}
+
+/********************** comment ***********************/
+
+.comment {
+	position: relative;
+	margin: 2px auto;
+	width: 100%;
+	background-color: #eee;
+}
+
+.comment-metadata {
+	text-align: right;
+	font-size: .7em;
+	font-weight: normal;
+}
+
+.comment-metadata span.name {
+	font-weight: bold;
+}
+
+.comment-metadata span.created_at {
+	margin-right: 1em;
+}
+
+.comment-metadata span.created_at::before {
+	content: "created at: ";
+	color: "gray";
+	font-size: .7em;
+}
+
+.comment-metadata span.updated_at {
+	margin-right: 1em;
+}
+
+.comment-metadata span.updated_at::before {
+	content: "updated at: ";
+	color: "gray";
+	font-size: .7em;
+}
+
+
+/************ referer ***********/
+
+/*===========================================================================*/
+
+@media screen and (min-width: 1280px) {
+	#content {
+		padding-top: 5em;
+		width: 1280px;
+	}
+
+	.section {
+		font-size: 14px;
+	}
+
+	.section-body {
+		margin-bottom: 5em;
+	}
+
+	blockquote {
+		margin: 1em;
+	}
+}
+
+@import "markdown.css";

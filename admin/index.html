@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../blog.css">
+	<link rel="stylesheet" href="admin.css">
+	<script src="admin.js" type="module" defer async></script>
+	<title>Blog[admin]</title>
+</head>
+
+<body>
+	<div id="header">
+		<button id="add-article">記事の追加</button>
+		<label>既存の記事:
+			<select id="select-month"></select>
+			<select id="select-tag"></select>
+			<button id="view-ranking">閲覧数順</button>
+			<button id="newly">最近更新</button>
+		</label>
+	</div>
+	<div id="content">
+		<div class="article-list-frame">
+			<div class="article-list"></div>
+		</div>
+		<div class="editor"></div>
+		<div class="preview-box"></div>
+	</div>
+</body>
+
+</html>
