@@ -113,8 +113,8 @@ get '/daily/:date' do
 end
 
 get '/monthly/:month' do
-	m = params[:date].match /^(?<year>[0-9]{4})(?<month>[0-9]{2})/
-	halt 400, "Unsupport month format: #{params[:date]}" if m.nil?
+	m = params[:month].match /^(?<year>[0-9]{4})(?<month>[0-9]{2})/
+	halt 400, "Unsupport month format: #{params[:month]}" if m.nil?
 
 	month = "#{m[:year]}-#{m[:month]}-01"
 	@list_of_articles = Articles
