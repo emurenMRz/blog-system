@@ -28,7 +28,7 @@ export const CE = (tag, props, ...children) => {
 	}
 
 	const apply = child => {
-		if (!child) return;
+		if (child === null || child === undefined) return;
 		if (typeof child === "string" || typeof child === "number")
 			e.insertAdjacentHTML("beforeend", child);
 		else if (child instanceof HTMLElement || child instanceof DocumentFragment)
