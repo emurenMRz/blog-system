@@ -30,12 +30,20 @@
 		<noscript><div id="noscript">コンテンツを正常に表示させるためにJavaScriptを有効にして下さい。</div></noscript>
 
 		<nav class="adminmenu">
-			<div class="control">
-				<a href="<%= BasePath %>/newly/update"><button>更新日が新しい20件</button></a>
-				<a href="<%= BasePath %>/newly/post"><button>投稿日が新しい20件</button></a>
-				<a href="<%= BasePath %>/views"><button>閲覧数上位20件</button></a>
+			<select class="narrowmenu">
+				<option value="<%= BasePath %>/newly/update">更新日が新しい20件</option>
+				<option value="<%= BasePath %>/newly/post">投稿日が新しい20件</option>
+				<option value="<%= BasePath %>/views">閲覧数上位20件</option>
+				<optgroup label="タグから選ぶ" class="tag-selector"><%= all_tags_selector %></optgroup>
+			</select>
+			<div class="widemenu">
+				<div class="control">
+					<a href="<%= BasePath %>/newly/update"><button>更新日が新しい20件</button></a>
+					<a href="<%= BasePath %>/newly/post"><button>投稿日が新しい20件</button></a>
+					<a href="<%= BasePath %>/views"><button>閲覧数上位20件</button></a>
+				</div>
+				<div class="tag-list"><%= all_tags_link %></div>
 			</div>
-			<div class="tags"><%= all_tags_link %></div>
 		</nav>
 
 		<%
@@ -89,6 +97,14 @@
 	</div>
 
 	<footer id="page-footer">&copy; 1999~ emuren.</footer>
+
+	<script type="text/javascript" defer async>
+		const narrowmenu = document.querySelector(".narrowmenu");
+		narrowmenu.addEventListener("change", e => location.href = e.currentTarget.value);
+		for (const c of Array.from(narrowmenu.getElementsByTagName("option")))
+			if(c.value === decodeURIComponent(location.pathname))
+				c.defaultSelected = true;
+	</script>
 </body>
 
 </html>

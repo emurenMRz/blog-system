@@ -182,12 +182,30 @@ span.tag::before {
 	text-decoration: none;
 }
 
+.adminmenu .narrowmenu {
+	display: inline-block;
+	padding: .5em;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.adminmenu .widemenu {
+	display: none;
+	padding: .5em;
+	box-sizing: border-box;
+}
+
+@media screen and (min-width: 1024px) {
+	.adminmenu .narrowmenu { display: none; }
+	.adminmenu .widemenu { display: block; }
+}
+
 .adminmenu .control {}
 .adminmenu .control button {
 	padding: .25em .5em;
 }
 
-.adminmenu .tags {}
+.adminmenu .tag-list { margin-top: 1em; }
 
 /************************* list **********************/
 

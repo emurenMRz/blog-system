@@ -17,14 +17,14 @@ Comments = DB[:comment].where(:visible => true)
 
 BasePath = File.join RootPath, '/index.rb'
 
-def all_tags_link
+def all_tags
 	DB[:tag]
 		.order(Sequel.desc(:views), :name)
 		.select(:name)
-		.all
-		.map{|v| %Q!<a href="#{BasePath}/tag/#{v[:name]}"><span class="tag">#{v[:name]}</span></a>!}
-		.join(" ");
+		.all;
 end
+def all_tags_link; all_tags.map{|v| %Q!<a href="#{BasePath}/tag/#{v[:name]}"><span class="tag">#{v[:name]}</span></a>!}.join(" "); end
+def all_tags_selector; all_tags.map{|v| %Q!<option value="#{BasePath}/tag/#{v[:name]}"><span class="tag">#{v[:name]}</span></option>!}.join; end
 
 def tag_list(tags); tags.map{|v| %Q!<span class="tag">#{v}</span>!}.join(" "); end
 def tag_list_with_link(tags); tags.map{|v| %Q!<a href="#{BasePath}/tag/#{v}"><span class="tag">#{v}</span></a>!}.join(" "); end
