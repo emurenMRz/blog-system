@@ -46,21 +46,25 @@
 			</div>
 		</nav>
 
-		<%
-		@list_of_articles.map{|v|
-			id = "#{v[:created_at].strftime("%Y%m%d")}p#{v[:no]}"
-		%>
-			<a href="<%= BasePath %>/article/<%= id %>" title="<%= v[:title] %>">
-				<div class="section-anchor">
-					<div class="title"><%= v[:title] %></div>
-					<div class="section-metadata">
-						<span class="timestamp created_at"><%= v[:created_at].strftime("%Y-%m-%d") %></span>
-						<span class="timestamp updated_at"><%= v[:updated_at].strftime("%Y-%m-%d") %></span>
-						<span class="tags"><%= tag_list v[:tags] %></span>
+		<% unless @list_of_articles.nil? %>
+			<%= page_selector @now_mode, @now_page if !@now_mode.nil? && !@now_page.nil? %>
+			<%
+			@list_of_articles.map{|v|
+				id = "#{v[:created_at].strftime("%Y%m%d")}p#{v[:no]}"
+			%>
+				<a href="<%= BasePath %>/article/<%= id %>" title="<%= v[:title] %>">
+					<div class="section-anchor">
+						<div class="title"><%= v[:title] %></div>
+						<div class="section-metadata">
+							<span class="timestamp created_at"><%= v[:created_at].strftime("%Y-%m-%d") %></span>
+							<span class="timestamp updated_at"><%= v[:updated_at].strftime("%Y-%m-%d") %></span>
+							<span class="tags"><%= tag_list v[:tags] %></span>
+						</div>
 					</div>
-				</div>
-			</a>
-		<% }.join("\n") unless @list_of_articles.nil? %>
+				</a>
+			<% }.join("\n") unless @list_of_articles.nil? %>
+			<%= page_selector @now_mode, @now_page if !@now_mode.nil? && !@now_page.nil? %>
+		<% end %>
 
 		<% unless @article.nil? %>
 			<div class="section">

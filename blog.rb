@@ -16,6 +16,8 @@ Articles = DB[:article].where(:visible => true)
 Comments = DB[:comment].where(:visible => true)
 
 BasePath = File.join RootPath, '/index.rb'
+ArticleLimit = 20
+MaxPage = (Articles.count / ArticleLimit.to_f).ceil
 
 def all_tags
 	DB[:tag]
@@ -40,6 +42,31 @@ def body_to_html(body, format)
 	return body.split("\n").map{|v| "#{v}<br>"}.join
 end
 
+def get_offset_by_page(page)
+	page = page.to_i
+	(page < 1 || page > MaxPage) ? 0 : (page - 1) * ArticleLimit
+end
+
+def article_list(mode, page, *order_cond)
+	offset = get_offset_by_page(page)
+
+	@now_mode = mode
+	@now_page = offset / ArticleLimit + 1
+	@list_of_articles = Articles.order(*order_cond).offset(offset).limit(ArticleLimit).all
+
+	content_type :html
+	ERB.new(File.read('template.rhtml')).result
+end
+
+def page_selector(mode, page)
+	prev_button = page > 1
+	next_button = page < MaxPage
+	html = ''
+	html += prev_button ? %Q!<a href="#{BasePath}#{mode}/#{page - 1}"><button>&lt;&lt; 前のページ</button></a>! : %Q!<button disabled>&lt;&lt; 前のページ</button>!
+	html += next_button ? %Q!<a href="#{BasePath}#{mode}/#{page + 1}"><button>次のページ &gt;&gt;</button></a>! : %Q!<button disabled>次のページ &gt;&gt;</button>!
+	%Q!<div class="page-selector">#{html}</div>!
+end
+
 #
 # API
 #
@@ -58,31 +85,31 @@ get '/' do
 		redirect "#{BasePath}/tag/#{params[:category]}"
 	end
 
-	@list_of_articles = Articles.order(Sequel.desc(:updated_at)).limit(20).all
+	article_list '/newly/update', 1, Sequel.desc(:updated_at)
+end
 
-	content_type :html
-	ERB.new(File.read('template.rhtml')).result
+get '/newly/update/:page' do
+	article_list '/newly/update', params[:page], Sequel.desc(:updated_at)
 end
 
 get '/newly/update' do
-	@list_of_articles = Articles.order(Sequel.desc(:updated_at)).limit(20).all
+	article_list '/newly/update', 1, Sequel.desc(:updated_at)
+end
 
-	content_type :html
-	ERB.new(File.read('template.rhtml')).result
+get '/newly/post/:page' do
+	article_list '/newly/post', params[:page], Sequel.desc(:created_at)
 end
 
 get '/newly/post' do
-	@list_of_articles = Articles.order(Sequel.desc(:created_at), :no).limit(20).all
+	article_list '/newly/post', 1, Sequel.desc(:created_at)
+end
 
-	content_type :html
-	ERB.new(File.read('template.rhtml')).result
+get '/views/:page' do
+	article_list '/views', params[:page], Sequel.desc(:views), Sequel.desc(:created_at)
 end
 
 get '/views' do
-	@list_of_articles = Articles.order(Sequel.desc(:views), Sequel.desc(:created_at)).limit(20).all
-
-	content_type :html
-	ERB.new(File.read('template.rhtml')).result
+	article_list '/views', 1, Sequel.desc(:views), Sequel.desc(:created_at)
 end
 
 get '/tag/:name' do
@@ -90,7 +117,7 @@ get '/tag/:name' do
 	name = tag.sub(/'/, %q{''})
 	DB[:tag].where(:name => tag).update(:views => Sequel[:views] + 1) unless private_access?
 	@list_of_articles = Articles
-		.where(Sequel.lit(%Q{tags ?& array['#{name}']}))
+		.where(Sequel.lit("tags ?& array[:name]", :name => name))
 		.order(Sequel.desc(:updated_at))
 		.all
 
@@ -104,7 +131,7 @@ get '/daily/:date' do
 
 	date = "#{m[:year]}-#{m[:month]}-#{m[:date]}"
 	@list_of_articles = Articles
-		.where(Sequel.lit(%Q!created_at::DATE='#{date}'!))
+		.where(Sequel.lit("created_at::DATE=?", date))
 		.order(:no)
 		.all
 
@@ -118,8 +145,8 @@ get '/monthly/:month' do
 
 	month = "#{m[:year]}-#{m[:month]}-01"
 	@list_of_articles = Articles
-		.where(Sequel.expr(:created_at) >= Sequel.lit(%Q!DATE_TRUNC('month', '#{month}'::DATE)!))
-		.where(Sequel.expr(:created_at) <= Sequel.lit(%Q!DATE_TRUNC('month', '#{month}'::DATE) + '1 months' + '-1 days'!))
+		.where(Sequel.expr(:created_at) >= Sequel.lit("DATE_TRUNC('month', ?::DATE)", month))
+		.where(Sequel.expr(:created_at) <= Sequel.lit("DATE_TRUNC('month', ?::DATE) + '1 months' + '-1 days'", month))
 		.order(:created_at, :no)
 		.all
 
@@ -134,11 +161,11 @@ get '/article/:id' do
 	date = "#{m[:year]}-#{m[:month]}-#{m[:date]}"
 	no = m[:parag].to_i
 
-	article = Articles.where(Sequel.lit(%Q!created_at::DATE='#{date}'!)).where(:no => no)
+	article = Articles.where(Sequel.lit("created_at::DATE=?", date)).where(:no => no)
 	article.update(:views => Sequel[:views] + 1) unless private_access?
 	@article = article.first
 		.merge({
-			:comments => Comments.where(Sequel.lit(%Q!created_at::DATE='#{date}'!)).order(:created_at).all,
+			:comments => Comments.where(Sequel.lit("created_at::DATE=?", date)).order(:created_at).all,
 			:referer => nil
 		})
 

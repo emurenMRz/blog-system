@@ -207,6 +207,16 @@ span.tag::before {
 
 .adminmenu .tag-list { margin-top: 1em; }
 
+/************************* page selector **********************/
+
+.page-selector {
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+	width: 100%;
+	margin: .5em auto;
+}
+
 /************************* list **********************/
 
 .section ul {
