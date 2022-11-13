@@ -7,13 +7,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<meta name="description" content="開発その他の記録です。">
+	<meta name="description" content="<%= @article.nil? ? '開発その他の記録です。' : @article[:title] %>">
 	<meta property="og:title" content="MRz-NET.org">
 	<meta property="og:type" content="website">
-	<meta property="og:image" content="https://www.mrz-net.org/img/ogps.png">
-	<meta property="og:url" content="https://www.mrz-net.org/_tdiary">
-	<meta property="og:description" content="開発その他の記録です。">
-	<meta name="twitter:card" content="summary_large_image">
+	<meta property="og:image" content="https://www.mrz-net.org<%= @article_image_path.nil? ? '/img/ogps.png' : @article_image_path %>">
+	<meta property="og:url" content="https://www.mrz-net.org<%= @article.nil? ? RootPath : %Q!#{ENV['SCRIPT_NAME']}#{ENV['PATH_INFO']}! %>">
+	<meta property="og:description" content="<%= @article.nil? ? '開発その他の記録です。' : @article[:title] %>">
+	<meta name="twitter:card" content="summary">
 	<meta name="twitter:site" content="@emurenMRz">
 
 	<link rel="stylesheet" href="/mrz-net.css" type="text/css" media="screen">
