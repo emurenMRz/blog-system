@@ -35,10 +35,14 @@ post '/article' do
 	insert_params[:tags] = params[:tags].to_json if params.has_key? :tags
 	insert_params[:body] = params[:body] if params.has_key? :body
 
+	row = DB[:article].where(Sequel.lit("created_at::DATE=?", params[:created_at])).order(Sequel.desc(:no)).first
+	no = row.nil? ? 1 : row[:no].to_i + 1
+	insert_params[:no] = no
+
 	result = !DB[:article].insert(insert_params).nil?
 
 	content_type :json
-	%Q!{"result": #{result}}!
+	%Q!{"result": #{result}, "no": #{no}}!
 rescue => e
 	STDERR.puts e.message
 
@@ -127,13 +131,13 @@ get '/articles/:date' do
 	elsif date.length == 6
 		date = date.insert(4, '-') + "-01"
 		sql = DB[:article]
-			.where(Sequel.expr(:created_at) >= Sequel.lit(%Q{DATE_TRUNC('month', '#{date}'::DATE)}))
-			.where(Sequel.expr(:created_at) <= Sequel.lit(%Q{DATE_TRUNC('month', '#{date}'::DATE) + '1 months' + '-1 days'}))
+			.where(Sequel.expr(:created_at) >= Sequel.lit("DATE_TRUNC('month', ?::DATE)", date))
+			.where(Sequel.expr(:created_at) <= Sequel.lit("DATE_TRUNC('month', ?::DATE) + '1 months' + '-1 days'", date))
 			.order(:created_at, :no)
 	elsif date.length == 8
 		date = "#{date[0..3]}-#{date[4..5]}-#{date[6..7]}"
 		sql = DB[:article]
-			.where(Sequel.lit(%Q!created_at::DATE='#{date}'!))
+			.where(Sequel.lit("created_at::DATE=?", date))
 			.order(:no)
 	else
 		raise "Unsupport date format: #{date}"

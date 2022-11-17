@@ -70,7 +70,7 @@ export default function EditArticle(targetArticle = undefined) {
 		}
 		if (Object.keys(sendData).length === 0)
 			throw new BlogError("変更箇所がありません");
-		const update = targetArticle && "created_at" in targetArticle && "no" in targetArticle;
+		const update = targetArticle !== undefined && "created_at" in targetArticle && "no" in targetArticle;
 		const post = update
 			? PUT(`article/${date_format(targetArticle.created_at)}/${targetArticle.no}`, sendData)
 			: POST("article", sendData);
@@ -80,6 +80,12 @@ export default function EditArticle(targetArticle = undefined) {
 			updateMonthSelector();
 			updateArticleList();
 			onpreview();
+			if (!targetArticle) {
+				targetArticle = sendData;
+				targetArticle.no = json.no;
+				document.querySelector(".created_at").disabled = true;
+				document.querySelector(".delete").disabled = false;
+			}
 		}).catch(alert);
 	}
 
@@ -90,6 +96,7 @@ export default function EditArticle(targetArticle = undefined) {
 					throw new Error("削除に失敗しました");
 				targetArticle = undefined;
 				document.querySelector(".created_at").disabled = false;
+				document.querySelector(".delete").disabled = true;
 				document.querySelector(".preview-box").textContent = "";
 				updateMonthSelector();
 				updateArticleList();
@@ -125,7 +132,7 @@ export default function EditArticle(targetArticle = undefined) {
 			),
 			CE("button", { className: "submit", onclick: onsubmit }, targetArticle ? "更新" : "送信"),
 			CE("button", { className: "preview", onclick: onpreview }, "プレビュー"),
-			targetArticle ? CE("button", { className: "delete", onclick: ondelete }, "削除") : null,
+			CE("button", { className: "delete", disabled: targetArticle === undefined, onclick: ondelete }, "削除"),
 		)
 	);
 }
