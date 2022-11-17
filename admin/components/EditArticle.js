@@ -1,4 +1,4 @@
-import { GET, POST, PUT, PREVIEW } from "./api.js";
+import { GET, POST, PUT, DELETE, PREVIEW } from "./api.js";
 import { CE, date_format, calendar_format, updateMonthSelector } from "./util.js";
 import BlogError from "./BlogError.js";
 import { updateArticleList } from "./ArticleList.js";
@@ -83,6 +83,19 @@ export default function EditArticle(targetArticle = undefined) {
 		}).catch(alert);
 	}
 
+	const ondelete = () => {
+		DELETE(`article/${date_format(targetArticle.created_at)}/${targetArticle.no}`)
+			.then(json => {
+				if (!json.result)
+					throw new Error("削除に失敗しました");
+				targetArticle = undefined;
+				document.querySelector(".created_at").disabled = false;
+				document.querySelector(".preview-box").textContent = "";
+				updateMonthSelector();
+				updateArticleList();
+			}).catch(alert);
+	}
+
 	const previewBox = document.querySelector(".preview-box");
 	previewBox.textContent = "";
 
@@ -112,6 +125,7 @@ export default function EditArticle(targetArticle = undefined) {
 			),
 			CE("button", { className: "submit", onclick: onsubmit }, targetArticle ? "更新" : "送信"),
 			CE("button", { className: "preview", onclick: onpreview }, "プレビュー"),
+			targetArticle ? CE("button", { className: "delete", onclick: ondelete }, "削除") : null,
 		)
 	);
 }

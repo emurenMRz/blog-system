@@ -14,7 +14,7 @@ def one_article(params)
 	date = params[:date]
 	date = "#{date[0..3]}-#{date[4..5]}-#{date[6..7]}"
 	no = params[:no].to_i
-	DB[:article].where(Sequel.lit(%Q!created_at::DATE='#{date}'!)).where(:no => no)
+	DB[:article].where(Sequel.lit("created_at::DATE=?", date)).where(:no => no)
 end
 
 # 

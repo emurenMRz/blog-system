@@ -65,9 +65,14 @@ body {
 }
 
 .editor .submit,
-.editor .preview {
+.editor .preview,
+.editor .delete {
 	margin-right: 1em;
 	font-size: 1.25em;
+}
+
+.editor .delete {
+	float: right;
 }
 
 .article-list-frame {

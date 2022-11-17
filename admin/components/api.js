@@ -18,7 +18,8 @@ const send = (method, endPoint, body = undefined) => {
 			"Content-Length": body.length
 		});
 		init = { method, headers, body };
-	}
+	} else if (method === "DELETE")
+		init = { method };
 
 	return fetch(`api.rb/${endPoint}`, init)
 		.then(r => {
