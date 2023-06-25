@@ -24,7 +24,7 @@ init()
   SETTING=${MEDIR}/setting.rb
   if [ ! -e ${SETTING} ]; then
     echo "DBHost = '${DBHOST}'" > ${SETTING}
-    echo "DBName = '${NAME}'" > ${SETTING}
+    echo "DBName = '${NAME}'" >> ${SETTING}
     echo "DBUser = '${USER}'" >> ${SETTING}
     echo "RootPath = '/$(basename ${DEPROY})'" >> ${SETTING}
   fi
