@@ -122,7 +122,8 @@ module APICGI
 		end
 
 		def remote_addr; ENV['REMOTE_ADDR']; end
-
+		def http_referer; ENV['HTTP_REFERER']; end
+		
 		def private_access?;
 			addr = remote_addr
 			return false if addr.nil?

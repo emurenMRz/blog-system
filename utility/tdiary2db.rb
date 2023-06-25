@@ -12,7 +12,7 @@ require_relative '../setting'
 SRC = JSON.parse(File.read('./articles_and_comments.json'), symbolize_names: true)
 raise "Unsupport format." unless SRC.has_key?(:articles)
 
-DB = Sequel.postgres DBName, :user => DBUser
+DB = Sequel.postgres DBName, :user => DBUser, :host => DBHost
 DB.extension :pg_json
 DB.wrap_json_primitives = true
 

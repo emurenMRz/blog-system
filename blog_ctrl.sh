@@ -3,6 +3,8 @@
 NAME=blog
 USER=pgsql
 
+DBHOST=localhost
+
 BIN=/usr/local/bin/
 MEDIR=`cd $(dirname ${0}) && pwd`
 DUMPDIR=${MEDIR}/db/dump
@@ -21,6 +23,7 @@ init()
 
   SETTING=${MEDIR}/setting.rb
   if [ ! -e ${SETTING} ]; then
+    echo "DBHost = '${DBHOST}'" > ${SETTING}
     echo "DBName = '${NAME}'" > ${SETTING}
     echo "DBUser = '${USER}'" >> ${SETTING}
     echo "RootPath = '/$(basename ${DEPROY})'" >> ${SETTING}
@@ -34,22 +37,22 @@ init()
 
 create()
 {
-	${BIN}createdb -U ${USER} ${NAME} --encoding=UTF-8 --locale=ja_JP.UTF-8 --template=template0
-	${BIN}psql -U ${USER} ${NAME} -f ${MEDIR}/db/create.sql
+	${BIN}createdb -h ${DBHOST} -U ${USER} ${NAME} --encoding=UTF-8 --locale=ja_JP.UTF-8 --template=template0
+	${BIN}psql -h ${DBHOST} -U ${USER} ${NAME} -f ${MEDIR}/db/create.sql
 }
 
 dump()
 {
 	mkdir -p ${DUMPDIR}
 
-	${BIN}pg_dump -U ${USER} -Fc -f ${DUMPDIR}/${NAME}`date +%Y%m%d` ${NAME}
+	${BIN}pg_dump -h ${DBHOST} -U ${USER} -Fc -f ${DUMPDIR}/${NAME}`date +%Y%m%d` ${NAME}
 }
 
 restore()
 {
-	${BIN}dropdb -U ${USER} ${NAME}
-	${BIN}createdb -U ${USER} ${NAME} --encoding=UTF-8 --locale=ja_JP.UTF-8 --template=template0
-	${BIN}pg_restore -U ${USER} -d ${NAME} ${DUMPDIR}/${1}
+	${BIN}dropdb -h ${DBHOST} -U ${USER} ${NAME}
+	${BIN}createdb -h ${DBHOST} -U ${USER} ${NAME} --encoding=UTF-8 --locale=ja_JP.UTF-8 --template=template0
+	${BIN}pg_restore -h ${DBHOST} -U ${USER} -d ${NAME} ${DUMPDIR}/${1}
 }
 
 case "$1" in

@@ -8,7 +8,7 @@ require_relative './setting'
 require_relative './apicgi'
 extend APICGI::Delegator
 
-DB = Sequel.postgres DBName, :user => DBUser
+DB = Sequel.postgres DBName, :user => DBUser, :host => DBHost
 DB.extension :pg_json
 DB.wrap_json_primitives = true
 

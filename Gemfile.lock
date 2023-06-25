@@ -1,11 +1,13 @@
 GEM
+  remote: https://rubygems.org/
   specs:
-    commonmarker (0.23.6)
+    commonmarker (0.23.9)
     hikidoc (0.1.0)
-    sequel (5.60.1)
+    sequel (5.68.0)
 
 PLATFORMS
   amd64-freebsd-12
+  amd64-freebsd-13
 
 DEPENDENCIES
   commonmarker
@@ -13,4 +15,4 @@ DEPENDENCIES
   sequel
 
 BUNDLED WITH
-   2.3.17
+   2.4.10
